@@ -1,0 +1,58 @@
+#include "elf_loader.h"
+#include "../memory.h"
+#include <string>
+#include <elfio/elfio.hpp>
+
+static void load_elf_section( WriteableMemory* memory, const ELFIO::section& section, AddrDiff offset)
+{
+    using namespace std::literals::string_literals;
+    if ( section.get_address() == 0 || section.get_data() == nullptr)
+        throw InvalidElfSection( "\""s + section.get_name() + "\""s);
+
+    memory->memcpy_host_to_guest( section.get_address() + offset, byte_cast( section.get_data()), section.get_size());
+}
+
+ElfLoader::ElfLoader( const std::string& filename)
+    : reader( std::make_unique<ELFIO::elfio>())
+{
+    if ( !reader->load( filename))
+        throw InvalidElfFile( filename);
+}
+
+void ElfLoader::load_to( WriteableMemory *memory, AddrDiff offset) const
+{
+    for ( const auto& section : reader->sections)
+        if ( ( section->get_flags() & SHF_ALLOC) != 0)
+            load_elf_section( memory, *section, offset);
+}
+
+Addr ElfLoader::get_text_section_addr() const
+{
+    return reader->sections[ ".text"] != nullptr ? reader->sections[ ".text"]->get_address() : 0;
+}
+
+Addr ElfLoader::get_startPC() const
+{
+    for ( const auto& section : reader->sections) {
+        if ( section->get_type() != SHT_SYMTAB)
+            continue;
+
+        ELFIO::symbol_section_accessor symbols(*reader, section);
+        for ( ELFIO::Elf_Xword j = 0; j < symbols.get_symbols_num(); ++j ) {
+            std::string name;
+            ELFIO::Elf64_Addr value = 0;
+            ELFIO::Elf_Xword size;
+            unsigned char bind;
+            unsigned char type;
+            ELFIO::Elf_Half section_index;
+            unsigned char other;
+            symbols.get_symbol( j, name, value, size, bind, type, section_index, other );
+            if ( name == "__start" || name == "_start")
+                return value;
+        }
+    }
+
+    throw InvalidEntryPoint();
+}
+
+ElfLoader::~ElfLoader() = default;
