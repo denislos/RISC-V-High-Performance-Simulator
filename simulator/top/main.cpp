@@ -6,6 +6,8 @@
 
 #include <infra/config/config.h>
 #include <infra/types.h>
+#include <memory/memory.h>
+#include <memory/elf/elf_loader.h>
 
 
 namespace config {
@@ -21,6 +23,11 @@ int main(int argc, char** argv)
 {
     if (!config::parse_arguments(argc, argv))
         return EXIT_SUCCESS;
+
+    auto memory = Memory::get_memory();
+
+    ElfLoader elf_loader = ElfLoader(config::trace_file.get_value());
+    elf_loader.load_to(memory);
 
     return EXIT_SUCCESS;
 }

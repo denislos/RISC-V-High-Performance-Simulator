@@ -3,7 +3,14 @@
 #include <cstring>
 #include "memory.h"
 
-std::shared_ptr<Memory> Memory::Mem = Memory::create_memory(64);
+#include <infra/config/config.h>
+
+namespace config {
+    ConfigOption<uint64> memory_size("memory_size", "Size of memory", 2048);
+} // namespace config
+
+
+std::shared_ptr<Memory> Memory::Mem = Memory::create_memory(config::memory_size);
 
 std::shared_ptr<Memory> 
 Memory::create_memory(uint64_t size)

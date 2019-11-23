@@ -116,6 +116,8 @@ namespace config {
         {
             return os << option.get_value();
         }
+
+        operator T () const noexcept { return this->get_value(); }
     };
 
 
@@ -129,10 +131,14 @@ namespace config {
             : BaseConfigOption<T>(option_name, description, default_value, true)
         { }
 
+        T get_value() const noexcept { return BaseConfigOption<T>::get_value(); }
+
         friend std::ostream& operator<<( std::ostream& os, const RequiredConfigOption<T>& option)
         {
             return os << option.get_value();
         }
+
+        operator T () const noexcept { return this->get_value(); }
     };
 
 

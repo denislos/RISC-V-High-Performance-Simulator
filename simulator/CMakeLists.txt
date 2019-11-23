@@ -14,6 +14,7 @@ set(SOURCES
     infra/config/config.cpp
     top/main.cpp
     memory/memory.cpp
+    memory/elf/elf_loader.cpp
 )
 
 

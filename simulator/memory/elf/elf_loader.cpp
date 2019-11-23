@@ -6,7 +6,7 @@
 #include "../../../external/elfio/elfio.hpp"
 
 
-static void load_elf_section(Memory* memory, const ELFIO::section& section, AddrDiff offset)
+static void load_elf_section(std::shared_ptr<Memory> memory, const ELFIO::section& section, AddrDiff offset)
 {
     using namespace std::literals::string_literals;
     if (section.get_address() == 0 || section.get_data() == nullptr)
@@ -24,7 +24,7 @@ ElfLoader::ElfLoader(const std::string& filename)
 }
 
 
-void ElfLoader::load_to(Memory *memory, AddrDiff offset) const
+void ElfLoader::load_to(std::shared_ptr<Memory> memory, AddrDiff offset) const
 {
     for (const auto& section : reader->sections)
         if ((section->get_flags() & SHF_ALLOC) != 0)
