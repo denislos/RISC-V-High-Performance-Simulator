@@ -92,7 +92,7 @@ namespace config {
         BaseConfigOption( BaseConfigOption&&) = delete;
         BaseConfigOption& operator=( const BaseConfigOption&) = delete;
         BaseConfigOption& operator=( BaseConfigOption&&) = delete;
-    
+
     private:
         const std::string option_name;
         const std::string description;
@@ -111,6 +111,11 @@ namespace config {
                      const T& default_value)
             : BaseConfigOption<T>(option_name, description, default_value, false)
         { }
+
+        friend std::ostream& operator<<( std::ostream& os, const ConfigOption<T>& option)
+        {
+            return os << option.get_value();
+        }
     };
 
 
@@ -123,6 +128,11 @@ namespace config {
                              const T& default_value)
             : BaseConfigOption<T>(option_name, description, default_value, true)
         { }
+
+        friend std::ostream& operator<<( std::ostream& os, const RequiredConfigOption<T>& option)
+        {
+            return os << option.get_value();
+        }
     };
 
 
