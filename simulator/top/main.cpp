@@ -2,33 +2,25 @@
  * main.cpp - Main file
  */
 
-#include <string>
 #include <cstdlib>
 
+#include <infra/config/config.h>
 #include <infra/types.h>
-#include <infra/arg_parse/arg_parser.h>
-#include <memory/memory.h>
+
+
+namespace config {
+    RequiredConfigOption<std::string> trace_file("trace_file", "Trace to run", "");
+    RequiredConfigOption<uint64> num_instruction("num_instruction", "Number of instructions to run", 0);
+    
+    ConfigOption<bool> is_functional_only("functional_only", "Use only functional simulation", false);
+} // namespace config
+
 
 
 int main(int argc, char** argv)
 {
-    ArgParser arg_parser;
-    const bool should_continue = arg_parser.parse_arguments(argc, argv);
-
-    if (!should_continue)
+    if (!config::parse_arguments(argc, argv))
         return EXIT_SUCCESS;
-
-    
-    const std::string trace_file = arg_parser.get_option_trace();
-    const uint64 num_instructions = arg_parser.get_optionl_num_instrs();
-    const bool is_functional_only = arg_parser.get_option_functional_only();
-
-
-    auto memory = Memory::get_memory();
-    //auto simulator = Simulator::create_simulator(num_instructions, is_functional_only);
-    
-    //auto kernel = Kernel::create_kernel();
-
 
     return EXIT_SUCCESS;
 }
