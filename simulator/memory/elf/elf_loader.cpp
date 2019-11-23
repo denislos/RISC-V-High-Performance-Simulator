@@ -5,14 +5,16 @@
 #include "elf_loader.h"
 #include "../../../external/elfio/elfio.hpp"
 
+
 static void load_elf_section(Memory* memory, const ELFIO::section& section, AddrDiff offset)
 {
     using namespace std::literals::string_literals;
     if (section.get_address() == 0 || section.get_data() == nullptr)
         std::cout << "Exception should be issued\n";
 
-    memory->memcpy_host_to_guest(section.get_address() + offset, byte_cast(section.get_data()), section.get_size());
+    memory->write(section.get_address() + offset, section.get_data(), section.get_size());
 }
+
 
 ElfLoader::ElfLoader(const std::string& filename)
     : reader(std::make_unique<ELFIO::elfio>())
@@ -28,6 +30,7 @@ void ElfLoader::load_to(Memory *memory, AddrDiff offset) const
         if ((section->get_flags() & SHF_ALLOC) != 0)
             load_elf_section(memory, *section, offset);
 }
+
 
 Addr ElfLoader::get_text_section_addr() const
 {

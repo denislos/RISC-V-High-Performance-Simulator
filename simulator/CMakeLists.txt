@@ -13,6 +13,7 @@ find_package(Boost REQUIRED)
 set(SOURCES
     infra/arg_parse/arg_parser.cpp
     top/main.cpp
+    memory/memory.cpp
 )
 
 

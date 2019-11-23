@@ -24,7 +24,7 @@ int main(int argc, char** argv)
     const bool is_functional_only = arg_parser.get_option_functional_only();
 
 
-    auto memory = Memory::create_memory();
+    auto memory = Memory::get_memory();
     //auto simulator = Simulator::create_simulator(num_instructions, is_functional_only);
     
     //auto kernel = Kernel::create_kernel();
