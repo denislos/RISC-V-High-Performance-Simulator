@@ -11,7 +11,7 @@ find_package(Boost REQUIRED)
 
 
 set(SOURCES
-    infra/arg_parse/arg_parser.cpp
+    infra/config/config.cpp
     top/main.cpp
 )
 
