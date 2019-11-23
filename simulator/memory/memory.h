@@ -1,3 +1,6 @@
+#ifndef MEMORY_H
+#define MEMORY_H
+
 #include <vector>
 Class Memory 
 {
@@ -7,3 +10,5 @@ Class Memory
         write(Addr address, void* data);
         read(Addr address, void* data);
 }
+
+#endif // MEMORY_H
