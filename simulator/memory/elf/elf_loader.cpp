@@ -31,6 +31,15 @@ void ElfLoader::load_to(Memory *memory, AddrDiff offset) const
             load_elf_section(memory, *section, offset);
 }
 
+void ElfLoader::dump_sections()
+{
+    for (const auto& section : reader->sections) 
+        if ((section->get_flags() & SHF_ALLOC) != 0)
+            for (auto& byte : section->get_data())
+                std::cout << " " << byte << " ";
+
+}
+
 
 Addr ElfLoader::get_text_section_addr() const
 {

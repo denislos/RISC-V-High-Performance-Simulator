@@ -39,3 +39,10 @@ void Memory::read(Addr address, void* data, uint64_t num_bytes)
     }
     std::memcpy(data, &memory[address], num_bytes);
 }
+
+void Memory::dump()
+{
+    for (auto& byte : memory) {
+        std::cout << " " << byte << " "; 
+    }
+}
