@@ -1,7 +1,9 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
+#include "../../infra/types.h"
 #include <vector>
+
 Class Memory 
 {
     private:

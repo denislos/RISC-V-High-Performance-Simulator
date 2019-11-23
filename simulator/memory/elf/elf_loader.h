@@ -1,14 +1,12 @@
 #ifndef ELF_LOADER_H
 #define ELF_LOADER_H
 
-//#include "memory.h"
+#include "../../infra/types.h"
+#include "memory.h"
 #include <string>
 #include <memory>
 
-using Addr = uint64_t;
-using AddrDiff = int64_t;
-
-//class Memory;
+class Memory;
 
 namespace ELFIO {
     class elfio;
