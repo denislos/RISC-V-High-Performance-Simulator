@@ -6,15 +6,16 @@
 #include <infra/config/config.h>
 
 namespace config {
-    ConfigOption<uint64> memory_size("memory_size", "Size of memory", 2048);
+    ConfigOption<uint64> memory_size("memory_size", "Size of memory", 0);
 } // namespace config
 
 
 std::shared_ptr<Memory> Memory::Mem = Memory::create_memory(config::memory_size);
 
 std::shared_ptr<Memory> 
-Memory::create_memory(uint64_t size)
+Memory::create_memory(uint64 size)
 {
+    std::cout << size << std::endl;
     return std::shared_ptr<Memory>(new Memory(size));
 }
 
@@ -47,9 +48,9 @@ void Memory::read(Addr address, void* data, uint64_t num_bytes)
     std::memcpy(data, &memory[address], num_bytes);
 }
 
-void Memory::dump()
+void Memory::dump() const
 {
-    for (auto& byte : memory) {
-        std::cout << " " << byte << " "; 
+    for (const auto& byte : memory) {
+        std::cout << std::hex << byte; 
     }
 }

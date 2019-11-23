@@ -9,8 +9,9 @@
 static void load_elf_section(std::shared_ptr<Memory> memory, const ELFIO::section& section, AddrDiff offset)
 {
     using namespace std::literals::string_literals;
-    if (section.get_address() == 0 || section.get_data() == nullptr)
+    if (section.get_address() == 0 || section.get_data() == nullptr) {
         std::cout << "Exception should be issued\n";
+    }
 
     memory->write(section.get_address() + offset, section.get_data(), section.get_size());
 }
@@ -27,17 +28,28 @@ ElfLoader::ElfLoader(const std::string& filename)
 void ElfLoader::load_to(std::shared_ptr<Memory> memory, AddrDiff offset) const
 {
     for (const auto& section : reader->sections)
-        if ((section->get_flags() & SHF_ALLOC) != 0)
-            load_elf_section(memory, *section, offset);
+        if ((section->get_flags() & SHF_ALLOC) != 0) 
+        {
+            if (section->get_data() != nullptr)
+            {
+                load_elf_section(memory, *section, offset);
+            }
+        }
 }
 
-void ElfLoader::dump_sections()
+void ElfLoader::dump_sections() const
 {
     for (const auto& section : reader->sections) 
         if ((section->get_flags() & SHF_ALLOC) != 0)
-            for (auto& byte : section->get_data())
-                std::cout << " " << byte << " ";
-
+        {
+            auto data = section->get_data();
+            if (data != nullptr) {
+                for (uint64 i = 0; i < section->get_size(); i++)
+                {
+                    std::cout << data[i];
+                }
+            }
+        }
 }
 
 

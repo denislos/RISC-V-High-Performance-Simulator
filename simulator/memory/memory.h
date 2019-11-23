@@ -19,6 +19,7 @@ class Memory
         static std::shared_ptr<Memory> create_memory(uint64_t size);
         static std::shared_ptr<Memory> get_memory();
         uint64_t get_size() const { return size; }
+        void dump() const;
 };
 
 #endif // MEMORY_H

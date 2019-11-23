@@ -26,6 +26,7 @@ public:
     void load_to(std::shared_ptr<Memory> memory, AddrDiff offset = 0) const;
     Addr get_startPC() const;
     Addr get_text_section_addr() const;
+    void dump_sections() const;
 private:
     const std::unique_ptr<ELFIO::elfio> reader;
 };
