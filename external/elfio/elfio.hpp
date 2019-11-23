@@ -39,12 +39,12 @@ THE SOFTWARE.
 #include <iterator>
 #include <typeinfo>
 
-#include <elfio/elf_types.hpp>
-#include <elfio/elfio_utils.hpp>
-#include <elfio/elfio_header.hpp>
-#include <elfio/elfio_section.hpp>
-#include <elfio/elfio_segment.hpp>
-#include <elfio/elfio_strings.hpp>
+#include "elf_types.hpp"
+#include "elfio_utils.hpp"
+#include "elfio_header.hpp"
+#include "elfio_section.hpp"
+#include "elfio_segment.hpp"
+#include "elfio_strings.hpp"
 
 #define ELFIO_HEADER_ACCESS_GET( TYPE, FNAME ) \
 TYPE                                           \
@@ -935,10 +935,10 @@ class elfio
 
 } // namespace ELFIO
 
-#include <elfio/elfio_symbols.hpp>
-#include <elfio/elfio_note.hpp>
-#include <elfio/elfio_relocation.hpp>
-#include <elfio/elfio_dynamic.hpp>
+#include "elfio_symbols.hpp"
+#include "elfio_note.hpp"
+#include "elfio_relocation.hpp"
+#include "elfio_dynamic.hpp"
 
 #ifdef _MSC_VER
 #pragma warning ( pop )
