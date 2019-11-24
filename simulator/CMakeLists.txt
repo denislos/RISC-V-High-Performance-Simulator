@@ -5,7 +5,6 @@ project(RISC-V-High-Performance-Simulator)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -O3")
 
 find_package(Boost REQUIRED)
 
@@ -37,6 +36,11 @@ include_directories(${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/../exter
 add_library(simulator-src-lib STATIC ${SOURCES} ${RISCV_INSTRS_DEF})
 
 
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../rapidyaml ${CMAKE_BINARY_DIR}/rapidyaml)
+
 add_executable(simulator top/main.cpp)
+target_compile_options(simulator PUBLIC -Wall -Werror -Wextra -O3)
+
 target_link_libraries(simulator simulator-src-lib)
+target_link_libraries(simulator ryml)
 target_link_libraries(simulator boost_program_options)
