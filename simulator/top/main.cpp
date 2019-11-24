@@ -15,7 +15,7 @@ namespace config {
     RequiredConfigOption<std::string> trace_file("trace", "Trace to run", "");
     RequiredConfigOption<uint64> num_instructions("num_instrs", "Number of instructions to run", 0);
     
-    ConfigOption<bool> is_functional_only("functional_only", "Use only functional simulation", false);
+    ConfigOption<bool> is_functional_only("functional_only", "Use only functional simulation", true);
 } // namespace config
 
 
@@ -27,7 +27,6 @@ int main(int argc, char** argv)
 
     auto memory    = Memory::create_configured_memory();
     auto simulator = Simulator::create_configured_simulator();
-
 
     auto kernel = Kernel::create_configured_kernel();
 
@@ -41,7 +40,6 @@ int main(int argc, char** argv)
 
     simulator->set_pc(kernel->get_start_pc());
     simulator->run(config::num_instructions);
-
 
     return EXIT_SUCCESS;
 }

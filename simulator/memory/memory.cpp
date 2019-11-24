@@ -4,7 +4,7 @@
 
 #include <memory/memory.h>
 #include <infra/config/config.h>
-#include <iostream>
+
 namespace config {
     ConfigOption<uint64> memory_size("memory_size", "Size of memory", 4096);
 } // namespace config

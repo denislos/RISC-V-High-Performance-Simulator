@@ -6,7 +6,7 @@
 #include <memory/elf/elf_loader.h>
 #include <memory/memory.h>
 
-#include <iostream>
+
 static void load_elf_section(std::shared_ptr<Memory> memory, const ELFIO::section& section, AddrDiff offset)
 {
     using namespace std::literals::string_literals;

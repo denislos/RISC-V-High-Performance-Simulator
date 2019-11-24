@@ -24,14 +24,14 @@ public:
     void set_pc(Addr pc_value) noexcept { pc = pc_value; }
     virtual Addr get_pc() const noexcept { return pc; }
 
-    virtual void set_memory(std::shared_ptr<Memory> mem) { memory = mem; }
-    virtual void set_kernel(std::shared_ptr<Kernel> krn) { kernel = krn; }
+    void set_memory(std::shared_ptr<Memory> mem) { memory = mem; }
+    void set_kernel(std::shared_ptr<Kernel> krn) { kernel = krn; }
 
 protected:
     Addr pc = INVALID_ADDR;
 
-    std::shared_ptr<Memory> memory = nullptr;
-    std::shared_ptr<Kernel> kernel = nullptr;
+    std::shared_ptr<Memory> memory;
+    std::shared_ptr<Kernel> kernel;
 };
 
 

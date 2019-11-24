@@ -11,7 +11,7 @@
 class FunctionalSimulator final : public Simulator
 {
 public:
-    void run(uint64 num_instructions) override {std::cout << num_instructions << std::endl;}
+    void run(uint64 num_instructions) override {std::cout << "Running: " << num_instructions << " instructions" << std::endl;}
 
 private:
 };
