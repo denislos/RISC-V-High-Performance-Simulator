@@ -33,7 +33,6 @@ void ElfLoader::load_to(std::shared_ptr<Memory> memory, AddrDiff offset) const
         {
             if (section->get_data() != nullptr)
             {
-                std::cout << (memory == nullptr) << std::endl;
                 load_elf_section(memory, *section, offset);
             }
         }

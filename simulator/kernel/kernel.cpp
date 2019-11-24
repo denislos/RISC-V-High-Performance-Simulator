@@ -19,5 +19,4 @@ void Kernel::load_trace(const std::string& filename)
     ElfLoader elf_loader(filename);
     elf_loader.load_to(memory);
     start_pc = elf_loader.get_startPC();
-    std::cout << "Hello\n";
 }

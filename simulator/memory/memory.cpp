@@ -25,7 +25,6 @@ void Memory::write(Addr address, const void* data, uint64 num_bytes)
 {
     if (address + num_bytes > size)
     {
-        std::cout << num_bytes << " " << address << " " << size << std::endl;
         std::cerr << "error: address is out of memory " << std::endl;
     }
     std::memcpy(&memory[address], data, num_bytes);

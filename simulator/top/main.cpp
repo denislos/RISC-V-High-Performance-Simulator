@@ -35,13 +35,13 @@ int main(int argc, char** argv)
     kernel->set_memory(memory);
 
     kernel->load_trace(config::trace_file);
-    /*
+
     simulator->set_kernel(kernel);
     simulator->set_memory(memory);
 
     simulator->set_pc(kernel->get_start_pc());
     simulator->run(config::num_instructions);
-    */
+
 
     return EXIT_SUCCESS;
 }
