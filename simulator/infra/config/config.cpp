@@ -1,5 +1,5 @@
 /**
- * 
+ * config.cpp - Implementation of config module
  */
 
 #include <infra/config/config.h>

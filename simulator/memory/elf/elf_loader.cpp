@@ -1,11 +1,12 @@
 #include <string>
 #include <memory>
-
-#include "../memory.h"
-#include "elf_loader.h"
-#include "../../../external/elfio/elfio.hpp"
+#include <sstream>
 
 
+#include <memory/elf/elf_loader.h>
+#include <memory/memory.h>
+
+#include <iostream>
 static void load_elf_section(std::shared_ptr<Memory> memory, const ELFIO::section& section, AddrDiff offset)
 {
     using namespace std::literals::string_literals;
@@ -32,24 +33,29 @@ void ElfLoader::load_to(std::shared_ptr<Memory> memory, AddrDiff offset) const
         {
             if (section->get_data() != nullptr)
             {
+                std::cout << (memory == nullptr) << std::endl;
                 load_elf_section(memory, *section, offset);
             }
         }
 }
 
-void ElfLoader::dump_sections() const
+std::string ElfLoader::dump() const
 {
+    std::ostringstream oss;
+
     for (const auto& section : reader->sections) 
         if ((section->get_flags() & SHF_ALLOC) != 0)
         {
             auto data = section->get_data();
-            if (data != nullptr) {
+
+            if (data != nullptr)
+            {
                 for (uint64 i = 0; i < section->get_size(); i++)
-                {
-                    std::cout << data[i];
-                }
+                    oss << data[i];
             }
         }
+
+    return oss.str();
 }
 
 
@@ -80,5 +86,3 @@ Addr ElfLoader::get_startPC() const
     }
     return 0; // Exception 
 }
-
-ElfLoader::~ElfLoader() = default;

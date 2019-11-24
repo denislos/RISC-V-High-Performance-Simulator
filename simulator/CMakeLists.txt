@@ -11,17 +11,30 @@ find_package(Boost REQUIRED)
 
 
 set(SOURCES
-    infra/config/config.cpp
     top/main.cpp
+    top/simulator.cpp
+    kernel/kernel.cpp
+    infra/config/config.cpp
     memory/memory.cpp
     memory/elf/elf_loader.cpp
 )
 
 
-include_directories(${CMAKE_CURRENT_LIST_DIR})
+set(SCRIPTS_DIR ${CMAKE_CURRENT_LIST_DIR}/../scripts)
+
+set(RISCV_YAML_DEF ${SCRIPTS_DIR}/../simulator/risc-v/risc-v.yaml)
+set(RISCV_INSTRS_DEF ${SCRIPTS_DIR}/../simulator/risc-v/risc-v-instructions.def) 
+add_custom_command(
+    OUTPUT ${RISCV_INSTRS_DEF}
+    COMMAND python3 ${SCRIPTS_DIR}/generate-riscv-instrs-def.py ${RISCV_YAML_DEF} ${RISCV_INSTRS_DEF}
+    DEPENDS ${SCRIPTS_DIR}/generate-riscv-instrs-def.py
+)
 
 
-add_library(simulator-src-lib STATIC ${SOURCES})
+include_directories(${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/../external)
+
+
+add_library(simulator-src-lib STATIC ${SOURCES} ${RISCV_INSTRS_DEF})
 
 
 add_executable(simulator top/main.cpp)

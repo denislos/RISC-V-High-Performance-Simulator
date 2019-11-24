@@ -34,7 +34,12 @@ static const uint16 NO_VAL16 = 0xF00D;
 static const uint32 NO_VAL32 = 0xDEADBEEFul;
 static const uint64 NO_VAL64 = 0xDEADBEEFF00DCAFEull;
 
-using Addr = uint64_t;
-using AddrDiff = int64_t;
+using Addr     = uint64;
+using AddrDiff = int64;
+
+using Byte     = uint8;
+
+static const Addr INVALID_ADDR = NO_VAL64;   
+
 
 #endif // INFRA_TYPES_H

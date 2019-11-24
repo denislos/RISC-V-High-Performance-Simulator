@@ -7,7 +7,8 @@
 #include <infra/config/config.h>
 #include <infra/types.h>
 #include <memory/memory.h>
-#include <memory/elf/elf_loader.h>
+#include <top/simulator.h>
+#include <kernel/kernel.h>
 
 
 namespace config {
@@ -24,10 +25,23 @@ int main(int argc, char** argv)
     if (!config::parse_arguments(argc, argv))
         return EXIT_SUCCESS;
 
-    auto memory = Memory::get_memory();
+    auto memory    = Memory::create_configured_memory();
+    auto simulator = Simulator::create_configured_simulator();
 
-    ElfLoader elf_loader = ElfLoader(config::trace_file);
-    elf_loader.load_to(memory);
+
+    auto kernel = Kernel::create_configured_kernel();
+
+    kernel->set_simulator(simulator);
+    kernel->set_memory(memory);
+
+    kernel->load_trace(config::trace_file);
+    /*
+    simulator->set_kernel(kernel);
+    simulator->set_memory(memory);
+
+    simulator->set_pc(kernel->get_start_pc());
+    simulator->run(config::num_instructions);
+    */
 
     return EXIT_SUCCESS;
 }

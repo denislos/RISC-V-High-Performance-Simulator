@@ -1,10 +1,10 @@
 #include <memory>
-#include <iostream>
+#include <sstream>
 #include <cstring>
-#include "memory.h"
 
+#include <memory/memory.h>
 #include <infra/config/config.h>
-
+#include <iostream>
 namespace config {
     ConfigOption<uint64> memory_size("memory_size", "Size of memory", 4096);
 } // namespace config
@@ -25,6 +25,7 @@ void Memory::write(Addr address, const void* data, uint64 num_bytes)
 {
     if (address + num_bytes > size)
     {
+        std::cout << num_bytes << " " << address << " " << size << std::endl;
         std::cerr << "error: address is out of memory " << std::endl;
     }
     std::memcpy(&memory[address], data, num_bytes);
@@ -39,9 +40,12 @@ void Memory::read(Addr address, void* data, uint64 num_bytes)
     std::memcpy(data, &memory[address], num_bytes);
 }
 
-void Memory::dump() const
+std::string Memory::dump() const
 {
-    for (const auto& byte : memory) {
-        std::cout << std::hex << byte; 
-    }
+    std::ostringstream oss;
+
+    for (const auto& byte : memory)
+        oss << std::hex << byte;
+
+    return oss.str();
 }

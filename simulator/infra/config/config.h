@@ -1,5 +1,5 @@
 /**
- * config.h - Implementation
+ * config.h - Implementation of config module
  */
 
 
