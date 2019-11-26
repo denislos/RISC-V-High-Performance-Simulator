@@ -6,12 +6,22 @@
 #define FUNCSIM_H
 
 #include <top/simulator.h>
-#include <iostream> // REMOVE
 
 class FunctionalSimulator final : public Simulator
 {
 public:
-    void run(uint64 num_instructions) override {std::cout << "Running: " << num_instructions << " instructions" << std::endl;}
+    FunctionalSimulator()
+        : Simulator()
+    { }
+
+    virtual ~FunctionalSimulator() = default;
+    FunctionalSimulator(const FunctionalSimulator&) = delete;
+    FunctionalSimulator(FunctionalSimulator&&) = delete;
+    FunctionalSimulator& operator=(const FunctionalSimulator&) = delete;
+    FunctionalSimulator& operator=(FunctionalSimulator&&) = delete;
+
+    void run(uint64 num_instructions) override;
+
 
 private:
 };

@@ -6,13 +6,13 @@
 #ifndef INSTRUCTION_ENUM_H
 #define INSTRUCTION_ENUM_H
 
-enum Instr_Opcode {
+enum InstrType {
     #define DEFINSTR(name, mnemonic) \
-        Instr_Opcode_##name,
+        Instr_Type_##name,
     
     #include <risc-v/risc-v-instructions.def>
 
-        Instr_Opcode_MAX
+        Instr_Type_MAX
 
     #undef DEFINSTR
 };

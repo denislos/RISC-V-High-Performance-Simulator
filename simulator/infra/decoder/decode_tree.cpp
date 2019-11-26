@@ -1,12 +1,25 @@
 #include <memory/memory.h>
 #include <infra/config/config.h>
 #include <infra/decoder/decode_tree.h>
+#include <risc-v/register/riscv_register.h>
 
 namespace config {
     ConfigOption<std::string> yaml("yaml", "Rules for decoder", "risc-v/risc-v.yaml");
 } // namespace config
 
-Instruction
+
+const std::unordered_map<std::string, InstrType> DecodeTree::instr_mnemonics_map = {
+    #define DEFINSTR(name, mnemonic) \
+        { mnemonic, Instr_Type_##name },
+
+    #include <risc-v/risc-v-instructions.def>
+        
+        { "dummy", Instr_Type_MAX }
+
+    #undef DEFINSTR
+};
+
+std::shared_ptr<Instruction>
 DecodeTree::decode(uint32 instr_to_decode)
 {
     auto decodertree = tree["decodertree"];
@@ -25,8 +38,11 @@ DecodeTree::decode(uint32 instr_to_decode)
         std::cerr << "Error while decoding instruction " << std::hex << instr_to_decode;
     }
     // Generate instruction
-    auto instruction = Instruction(decodertree["mnemonic"].as<std::string>(), decodertree["format"].as<std::string>());
-    set_instr_fields(instruction, decodertree["fields"], instr_to_decode);
+    const auto mnemonic = decodertree["mnemonic"].as<std::string>();
+    const auto type = instr_mnemonics_map.at(mnemonic);
+
+    auto instruction = std::make_unique<Instruction>(mnemonic, type);
+    set_instr_fields(*instruction, decodertree["fields"], instr_to_decode);
     // Set needed fields
     return instruction;
 }
@@ -52,54 +68,67 @@ DecodeTree::set_field(Instruction& instruction, const std::string& field_name, i
 {
     if (field_name ==  "rd") {
         instruction.set_rd(static_cast<uint32>(field_value));
+        insrtuction.set_dst(RISCVRegister(field_value));
         return;
     }
     if (field_name ==  "rs1") {
         instruction.set_rs1(static_cast<uint32>(field_value));
+        instruction.set_src1(Register(field_value));
         return;
     }
     if (field_name ==  "rs2") {
         instruction.set_rs2(static_cast<uint32>(field_value));
+        instruction.set_src2(Register(field_value));
         return;
     }
     if (field_name ==  "rs3") {
         instruction.set_rs3(static_cast<uint32>(field_value));
+        instruction.set_src3(Register(field_value));
         return;
     }
     if (field_name ==  "rm") {
         instruction.set_rm(static_cast<uint32>(field_value));
+        instruction.set_mask_value(field_value);
         return;
     }
     if (field_name ==  "imm12") {
         instruction.set_imm12(field_value);
+        instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "imm20") {
         instruction.set_imm20(field_value);
+        instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "jimm20") {
         instruction.set_jimm20(field_value);
+        instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "storeimm") {
         instruction.set_storeimm(field_value);
+        instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "bimm") {
         instruction.set_bimm(field_value);
+        instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "aqrl") {
         instruction.set_aqrl(field_value);
+        //instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "shamt") {
         instruction.set_shamt(field_value);
+        //instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "shamtw") {
         instruction.set_shamtw(field_value);
+        //instruction.set_imm_value(field_value);
         return;
     }
     if (field_name ==  "pred") {

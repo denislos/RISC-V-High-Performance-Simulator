@@ -21,6 +21,8 @@ set(SOURCES
     memory/elf/elf_loader.cpp
     top/base_instruction.cpp
     infra/decoder/decode_tree.cpp
+    executor/executor.cpp
+    functional/funcsim.cpp
 )
 
 
@@ -46,7 +48,7 @@ add_library(simulator-src-lib STATIC ${SOURCES} ${RISCV_INSTRS_DEF})
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../yaml-cpp ${CMAKE_BINARY_DIR}/yaml-cpp)
 
 add_executable(simulator top/main.cpp)
-target_compile_options(simulator PUBLIC -O3)
+target_compile_options(simulator PUBLIC -Wall -Werror -Wextra -O3)
 
 target_link_libraries(simulator simulator-src-lib)
 target_link_libraries(simulator yaml-cpp)
