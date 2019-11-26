@@ -25,10 +25,7 @@ set(SOURCES
 
 
 set(SCRIPTS_DIR ${CMAKE_CURRENT_LIST_DIR}/../scripts)
-set(RYML_DIR ${CMAKE_CURRENT_LIST_DIR}/../rapidyaml/src)
 set(YAMLCPP_DIR ${CMAKE_CURRENT_LIST_DIR}/../yaml-cpp/include)
-set(C4CORE_DIR ${CMAKE_CURRENT_LIST_DIR}/../rapidyaml/extern/c4core/src)
-set(DEBUGBREAK_DIR ${CMAKE_CURRENT_LIST_DIR}/../rapidyaml/extern/c4core/extern)
 set(RISCV_YAML_DEF ${SCRIPTS_DIR}/../simulator/risc-v/risc-v.yaml)
 set(RISCV_INSTRS_DEF ${SCRIPTS_DIR}/../simulator/risc-v/risc-v-instructions.def) 
 add_custom_command(
@@ -38,7 +35,7 @@ add_custom_command(
 )
 
 
-include_directories(${RYML_DIR} ${C4CORE_DIR} ${DEBUGBREAK_DIR})
+
 include_directories(${YAMLCPP_DIR})
 include_directories(${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/../external ${BOOST_INCLUDE_DIR})
 link_directories(${BOOST_LIB_DIR})
@@ -46,7 +43,6 @@ link_directories(${BOOST_LIB_DIR})
 add_library(simulator-src-lib STATIC ${SOURCES} ${RISCV_INSTRS_DEF})
 
 
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../rapidyaml ${CMAKE_BINARY_DIR}/rapidyaml)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../yaml-cpp ${CMAKE_BINARY_DIR}/yaml-cpp)
 
 add_executable(simulator top/main.cpp)
@@ -54,5 +50,4 @@ target_compile_options(simulator PUBLIC -O3)
 
 target_link_libraries(simulator simulator-src-lib)
 target_link_libraries(simulator yaml-cpp)
-target_link_libraries(simulator ryml)
 target_link_libraries(simulator boost_program_options)
