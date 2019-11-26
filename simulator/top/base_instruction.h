@@ -84,7 +84,7 @@ class Instruction
 
         Register get_src(uint8 index) const noexcept
         {
-            return (index == 0) ? src1 : ((index == 1) ? src_2 : src3);
+            return (index == 0) ? src1 : ((index == 1) ? src2 : src3);
         }
         Register get_dst() const noexcept { return dst; }
 
@@ -104,10 +104,10 @@ class Instruction
 
         void set_src1_value(int32 value) noexcept { v_src1 = value; }
         void set_src2_value(int32 value) noexcept { v_src2 = value; }
-        void set_src3_value(int32 vlaue) noexcept { v_src3 = value; }
+        void set_src3_value(int32 value) noexcept { v_src3 = value; }
         
         void set_imm_value(int32 value) noexcept { v_imm = value; }
-        void set_mask_value(int32 mask) noexcept { v_mask = value; }
+        void set_mask_value(int32 mask) noexcept { v_mask = mask; }
 
         void set_dst_value(int32 value) noexcept { v_dst = value; }
 

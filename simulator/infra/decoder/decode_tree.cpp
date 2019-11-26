@@ -66,24 +66,26 @@ DecodeTree::set_instr_fields(Instruction& instruction, YAML::Node fields, uint32
 void 
 DecodeTree::set_field(Instruction& instruction, const std::string& field_name, int32 field_value)
 {
+    using RegType = RISCVRegister::RegType;
+
     if (field_name ==  "rd") {
         instruction.set_rd(static_cast<uint32>(field_value));
-        insrtuction.set_dst(RISCVRegister(field_value));
+        instruction.set_dst(RISCVRegister(static_cast<RegType>(field_value)));
         return;
     }
     if (field_name ==  "rs1") {
         instruction.set_rs1(static_cast<uint32>(field_value));
-        instruction.set_src1(Register(field_value));
+        instruction.set_src1(RISCVRegister(static_cast<RegType>(field_value)));
         return;
     }
     if (field_name ==  "rs2") {
         instruction.set_rs2(static_cast<uint32>(field_value));
-        instruction.set_src2(Register(field_value));
+        instruction.set_src2(RISCVRegister(static_cast<RegType>(field_value)));
         return;
     }
     if (field_name ==  "rs3") {
         instruction.set_rs3(static_cast<uint32>(field_value));
-        instruction.set_src3(Register(field_value));
+        instruction.set_src3(RISCVRegister(static_cast<RegType>(field_value)));
         return;
     }
     if (field_name ==  "rm") {

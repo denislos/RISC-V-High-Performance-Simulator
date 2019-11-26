@@ -14,7 +14,7 @@ public:
     enum RegType
     {
         #define DEFREG(register) \
-            Reg_Type_register,
+            Reg_Type_##register,
 
         #include <risc-v/register/risc-v-registers.def>
             
@@ -22,6 +22,11 @@ public:
 
         #undef DEFREG
     };
+
+    explicit constexpr RISCVRegister(RegType id) noexcept 
+        : value(id < Reg_Type_MAX ? id : Reg_Type_MAX) 
+    { }
+    constexpr RISCVRegister() noexcept : RISCVRegister(Reg_Type_zero) { }
 
     bool is_zero() const noexcept { return value == Reg_Type_zero; }
 
@@ -34,11 +39,6 @@ public:
 
 private:
     RegType value = Reg_Type_zero;
-    
-    explicit constexpr RISCVRegister(RegType id) noexcept 
-        : value(id < Reg_Type_MAX ? id : Reg_Type_MAX) 
-    { }
-    constexpr RISCVRegister() noexcept : RISCVRegister(Reg_Type_zero) { }
 };
 
 #endif // RISCV_REGISTER_H
