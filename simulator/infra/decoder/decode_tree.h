@@ -20,9 +20,8 @@
 class DecodeTree
 {
     public:
-        static void init();
-        explicit DecodeTree(std::string);
-        
+        explicit DecodeTree(const std::string& yaml_file);
+
         DecodeTree() = delete;
         virtual ~DecodeTree() = default;
         DecodeTree(const DecodeTree&) = delete;

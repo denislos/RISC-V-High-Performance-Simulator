@@ -4,7 +4,7 @@
 #include <risc-v/register/riscv_register.h>
 
 namespace config {
-    ConfigOption<std::string> yaml("yaml", "Rules for decoder", "risc-v/risc-v.yaml");
+    ConfigOption<std::string> yaml("yaml", "Rules for decoder", "../risc-v/risc-v.yaml");
 } // namespace config
 
 
@@ -36,6 +36,7 @@ DecodeTree::decode(uint32 instr_to_decode)
     // Should be something 
     if (decodertree.size() == 0) {
         std::cerr << "Error while decoding instruction " << std::hex << instr_to_decode;
+        /* FIXME */ return nullptr;
     }
     // Generate instruction
     const auto mnemonic = decodertree["mnemonic"].as<std::string>();
@@ -174,7 +175,7 @@ DecodeTree::get_field_value(uint32 instr, uint32 field_mask, int lsb)
     return (instr & field_mask) >> lsb;
 }
 
-DecodeTree::DecodeTree(std::string)
+DecodeTree::DecodeTree(const std::string& yaml_file)
 {
-    tree = YAML::LoadFile(config::yaml);
+    tree = YAML::LoadFile(yaml_file);
 }

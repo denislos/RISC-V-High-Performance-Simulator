@@ -58,6 +58,7 @@ class Instruction
         void set_succ(int32 value)     noexcept { succ     = value; }
         void set_fm(int32 value)       noexcept { fm       = value; }
        
+        void execute();
         void set_executor(Executor::Callback callback) { executor = callback; }
 
         uint32 get_rd()  const noexcept { return rd;  }
@@ -111,6 +112,24 @@ class Instruction
 
         void set_dst_value(int32 value) noexcept { v_dst = value; }
 
+        bool is_branch_taken() const noexcept { return is_taken; }
+
+        void set_PC(Addr pc) noexcept { PC = pc; }
+
+        Addr get_PC() const noexcept { return PC; }
+        Addr get_newPC() const noexcept { return new_PC; }
+        Addr get_target() const noexcept { return target; }
+
+        bool reads_memory() const noexcept { return is_memory_read; }
+        bool writes_memory() const noexcept { return is_memory_write; }
+
+        uint64 get_mem_access_size() const noexcept { return mem_access_size; }
+        Addr get_mem_addr() const noexcept { return mem_addr; }
+
+        int32 transform_load_data(int32 data) const noexcept { return data; }
+        int32 get_store_value() const noexcept { return store_data; }
+
+        std::string get_disasm_string() const noexcept;
 
     private:
         std::string name = "";
@@ -135,7 +154,16 @@ class Instruction
         int32 succ     = NO_VAL32;
         int32 fm       = NO_VAL32;
 
+        bool is_memory_read = false;
+        bool is_memory_write = false;
         Addr mem_addr  = INVALID_ADDR;
+        uint64 mem_access_size = 0;
+
+        int32 store_data = NO_VAL32;
+
+        Addr PC = INVALID_ADDR;
+        Addr new_PC = INVALID_ADDR;
+        Addr target = INVALID_ADDR;
         
         bool is_complete = false;
         bool is_taken    = false;
@@ -153,7 +181,7 @@ class Instruction
         int32 v_src2 = NO_VAL32;
         int32 v_src3 = NO_VAL32;
         int32 v_imm  = NO_VAL32;
-        int32 v_mask   = NO_VAL32;
+        int32 v_mask = NO_VAL32;
 
         int32 v_dst  = NO_VAL32;
 

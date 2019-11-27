@@ -6,9 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 
-set(BOOST_ROOT /p/dpg/arch/perfhome/boost/1.68.0)
-set(BOOST_INCLUDE_DIR ${BOOST_ROOT}/include)
-set(BOOST_LIB_DIR ${BOOST_ROOT}/gcc9.1/lib64)
+
 find_package(Boost REQUIRED)
 
 
@@ -23,24 +21,28 @@ set(SOURCES
     infra/decoder/decode_tree.cpp
     executor/executor.cpp
     functional/funcsim.cpp
+    functional/rf/rf.cpp
+    functional/fetch/fetch.cpp
+    functional/func_memory.cpp
 )
 
 
 set(SCRIPTS_DIR ${CMAKE_CURRENT_LIST_DIR}/../scripts)
 set(YAMLCPP_DIR ${CMAKE_CURRENT_LIST_DIR}/../yaml-cpp/include)
+
 set(RISCV_YAML_DEF ${SCRIPTS_DIR}/../simulator/risc-v/risc-v.yaml)
 set(RISCV_INSTRS_DEF ${SCRIPTS_DIR}/../simulator/risc-v/risc-v-instructions.def) 
 add_custom_command(
     OUTPUT ${RISCV_INSTRS_DEF}
-    COMMAND /p/dpg/arch/perfhome/python/miniconda3/bin/python3 ${SCRIPTS_DIR}/generate-riscv-instrs-def.py ${RISCV_YAML_DEF} ${RISCV_INSTRS_DEF}
+    COMMAND python3 ${SCRIPTS_DIR}/generate-riscv-instrs-def.py ${RISCV_YAML_DEF} ${RISCV_INSTRS_DEF}
     DEPENDS ${SCRIPTS_DIR}/generate-riscv-instrs-def.py
 )
 
 
-
+set(YAMLCPP_DIR ${CMAKE_CURRENT_LIST_DIR}/../yaml-cpp/include)
 include_directories(${YAMLCPP_DIR})
+
 include_directories(${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/../external ${BOOST_INCLUDE_DIR})
-link_directories(${BOOST_LIB_DIR})
 
 add_library(simulator-src-lib STATIC ${SOURCES} ${RISCV_INSTRS_DEF})
 

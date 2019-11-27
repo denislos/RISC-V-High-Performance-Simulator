@@ -9,7 +9,7 @@ namespace config {
     ConfigOption<uint64> memory_size("memory_size", "Size of memory", 4096);
 } // namespace config
 
-
+#include <iostream>
 std::shared_ptr<Memory> 
 Memory::create_configured_memory()
 {

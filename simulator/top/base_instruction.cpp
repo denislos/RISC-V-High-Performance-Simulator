@@ -1,4 +1,5 @@
 #include <top/base_instruction.h>
+#include <sstream>
 
 Instruction::Instruction(const std::string& name, InstrType type,
                          uint32 rd, uint32 rs1, uint32 rs2,
@@ -14,3 +15,19 @@ Instruction::Instruction(const std::string& name, InstrType type,
     Executor::assign_executor(this);
 }
 
+
+
+void Instruction::execute()
+{
+    executor(this);
+    is_complete = true;
+}
+
+
+std::string Instruction::get_disasm_string() const noexcept
+{
+    std::ostringstream oss;
+    oss << name << std::endl;
+
+    return oss.str(); 
+}

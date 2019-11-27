@@ -19,7 +19,7 @@ namespace config {
 } // namespace config
 
 
-
+#include <iostream>
 int main(int argc, char** argv)
 {
     if (!config::parse_arguments(argc, argv))
